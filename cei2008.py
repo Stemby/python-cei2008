@@ -30,23 +30,23 @@ class CEI2008(object):
 
     """An object representing Bible verses.
 
-    book: 'Genesi', 'Esodo', 'Levitico', 'Numeri', 'Deuteronomio', 'Giosue',
-    'Giudici', 'Rut', 'Samuele 1', 'Samuele 2', 'Re 1', 'Re 2',
-    'Cronache 1', 'Cronache 2', 'Esdra', 'Neemia', 'Tobia', 'Giuditta',
-    'Ester', 'Maccabei 1', 'Maccabei 2', 'Giobbe', 'Salmi', 'Proverbi',
-    'Qoelet', 'Cantico_Dei_Cantici', 'Sapienza', 'Siracide', 'Isaia',
-    'Geremia', 'Lamentazioni', 'Baruc', 'Ezechiele', 'Daniele', 'Osea',
-    'Gioele', 'Amos', 'Abdia', 'Giona', 'Michea', 'Naum', 'Abacuc',
+    book: a string chosen between 'Genesi', 'Esodo', 'Levitico', 'Numeri',
+    'Deuteronomio', 'Giosue', 'Giudici', 'Rut', 'Samuele 1', 'Samuele 2',
+    'Re 1', 'Re 2', 'Cronache 1', 'Cronache 2', 'Esdra', 'Neemia', 'Tobia',
+    'Giuditta', 'Ester', 'Maccabei 1', 'Maccabei 2', 'Giobbe', 'Salmi',
+    'Proverbi', 'Qoelet', 'Cantico_Dei_Cantici', 'Sapienza', 'Siracide',
+    'Isaia', 'Geremia', 'Lamentazioni', 'Baruc', 'Ezechiele', 'Daniele',
+    'Osea', 'Gioele', 'Amos', 'Abdia', 'Giona', 'Michea', 'Naum', 'Abacuc',
     'Sofonia', 'Aggeo', 'Zaccaria', 'Malachia', 'Matteo', 'Marco', 'Luca',
-    'Giovanni', 'Romani', 'Corinzi 1', 'Corinzi 2', 'Galati', 'Efesini',
-    'Filippesi', 'Colossesi', 'Tessalonicesi 1', 'Tessalonicesi 2',
-    'Timoteo 1', 'Timoteo 2', 'Tito', 'Filemone', 'Ebrei', 'Giacomo',
-    'Pietro 1', 'Pietro 2', 'Giovanni 1', 'Giovanni 2', 'Giovanni 3',
-    'Giuda', 'Atti_degli_Apostoli' or 'Apocalisse';
+    'Giovanni', 'Atti_degli_Apostoli', 'Romani', 'Corinzi 1', 'Corinzi 2',
+    'Galati', 'Efesini', 'Filippesi', 'Colossesi', 'Tessalonicesi 1',
+    'Tessalonicesi 2', 'Timoteo 1', 'Timoteo 2', 'Tito', 'Filemone',
+    'Ebrei', 'Giacomo', 'Pietro 1', 'Pietro 2', 'Giovanni 1', 'Giovanni 2',
+    'Giovanni 3', 'Giuda' or 'Apocalisse';
 
     chapter: the chapter number;
 
-    verses: a number representing the verse number or a tuple representing
+    verses: an integer representing the verse number or a tuple representing
     the first and the last verse.
     """
 
@@ -73,9 +73,11 @@ class CEI2008(object):
         for i in contents:
             if 'name="VER_{0}"'.format(number) in str(i):
                 p = n + 1
-                while type(contents[p]) == BS.NavigableString or (
-                        str(contents[p]) == '<br />'):
-                    parts.append(str(contents[p]).replace('<br />', '\n'))
+                while(type(contents[p]) == BS.NavigableString or
+                        str(contents[p]) == '<br />' or
+                        str(contents[p]).startswith('<i>')):
+                    parts.append(str(contents[p]).replace(
+                        '<br />', '\n').replace('<i>', '').replace('</i>', ''))
                     p += 1
                 return ''.join(parts)
             n += 1
