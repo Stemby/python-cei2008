@@ -1,4 +1,5 @@
 Python API for the "Nuova CEI" (CEI 2008) Bible.
+Copyright © 2011, Carlo Stemberger
 
 python-cei2008 provides a simple and pythonic interface for downloading Bible
 verses from the official website of the last Catholic Italian translation:
@@ -16,6 +17,14 @@ da Siena
 
 The author does not encourage the violation of any laws. Only the final user is
 responsable for any potential violations of the copyright law.
+
+
+DEPENDENCIES
+
+You only need Python and BeautifulSoap. On Debian/Ubuntu:
+
+$ aptitude install python-beautifulsoap
+
 
 EXAMPLE
 
