@@ -1,0 +1,19 @@
+Python API for the "Nuova CEI" (CEI 2008) Bible.
+
+python-cei2008 provides a simple and pythonic interface for downloading Bible
+verses from the official website of the last Catholic Italian translation:
+
+http://www.bibbiaedu.it/
+
+
+DISCLAMER
+
+python-cei2008 is free software, but please note that all rights of the Bible
+tranlation used by it are reserved:
+
+Copyright © 2008, Fondazione di Religione Santi Francesco d'Assisi e Caterina
+da Siena
+
+The author does not encourage the violation of any laws. Only the final user is
+responsable for any potential violations of the copyright law.
+
