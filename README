@@ -17,3 +17,12 @@ da Siena
 The author does not encourage the violation of any laws. Only the final user is
 responsable for any potential violations of the copyright law.
 
+EXAMPLE
+
+>>> from cei2008 import CEI2008
+>>> print CEI2008('Matteo', 4, 4)
+Ma egli rispose: "Sta scritto:
+
+Non di solo pane vivrà l'uomo,
+ma di ogni parola che esce dalla bocca di Dio".
+
