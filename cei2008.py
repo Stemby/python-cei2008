@@ -67,25 +67,23 @@ class CEI2008(object):
 
     def get_raw_verse(self, number):
         """Return the verse as a not well formatted string."""
-        n = 0
         contents = self.soup.find('div', {'class': 'testo'}).contents
         parts = []
-        for i in contents:
-            if 'name="VER_{0}"'.format(number) in str(i):
-                p = n + 1
-                while(type(contents[p]) == BS.NavigableString or
-                        str(contents[p]) == '<br />' or
-                        str(contents[p]).startswith('<i>')):
-                    parts.append(str(contents[p]).replace(
+        for i in enumerate(contents):
+            if 'name="VER_{0}"'.format(number) in str(i[1]):
+                n = i[0] + 1
+                while (isinstance(contents[n], BS.NavigableString) or
+                        str(contents[n]) == '<br />' or
+                        str(contents[n]).startswith('<i>')):
+                    parts.append(str(contents[n]).replace(
                         '<br />', '\n').replace('<i>', '').replace('</i>', ''))
-                    p += 1
+                    n += 1
                 return ''.join(parts)
-            n += 1
 
     def get_verses(self):
         """Return a list of the verses."""
         verses = []
-        if type(self.verses) == tuple:
+        if isinstance(self.verses, tuple):
             first_verse, last_verse = self.verses
             for i in range(first_verse, last_verse + 1):
                 verses.append(self.get_raw_verse(i))
