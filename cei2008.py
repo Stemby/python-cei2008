@@ -23,6 +23,7 @@ verses from the official website of the last Catholic Italian translation.
 
 import urllib2
 import BeautifulSoup as BS
+from sys import argv
 
 _cache = {}
 
@@ -53,7 +54,8 @@ class CEI2008(object):
     def __init__(self, book, chapter, verses):
         self.url = (
                 'http://www.bibbiaedu.it/pls/bibbiaol/GestBibbia09.Ricerca?'
-                'Libro={0}&Capitolo={1}'.format(book, chapter))
+                'Libro={0}&Capitolo={1}'.format(book.replace(' ', '%20'),
+                    chapter))
         try:
             self.soup = _cache[book, chapter]
         except:
@@ -91,3 +93,9 @@ class CEI2008(object):
             verses.append(self.get_raw_verse(self.verses))
         return verses
 
+if __name__ == '__main__':
+    if '-' in argv[3]:
+        verses = tuple(int(i) for i in argv[3].split('-'))
+    else:
+        verses = int(argv[3])
+    print CEI2008(argv[1].replace('_', ' '), int(argv[2]), verses)
