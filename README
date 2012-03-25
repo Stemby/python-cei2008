@@ -28,7 +28,7 @@ $ sudo aptitude install python-beautifulsoap
 
 EXAMPLES
 
-python-cei2008 is thought ad a library:
+python-cei2008 is thought as a library:
 
 >>> from cei2008 import CEI2008
 >>> print CEI2008('Matteo', 4, 4)
