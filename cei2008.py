@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-#    Copyright (C) 2011, Carlo Stemberger
+#    Copyright (C) 2011-2015, Carlo Stemberger
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,8 +21,7 @@ This module provides a simple and pythonic interface for downloading Bible
 verses from the official website of the last Catholic Italian translation.
 """
 
-import urllib2
-import BeautifulSoup as BS
+import urllib.request
 from sys import argv
 
 _cache = {}
@@ -32,18 +31,18 @@ class CEI2008(object):
     """An object representing Bible verses.
 
     book: a string chosen between 'Genesi', 'Esodo', 'Levitico', 'Numeri',
-    'Deuteronomio', 'Giosue', 'Giudici', 'Rut', 'Samuele 1', 'Samuele 2',
-    'Re 1', 'Re 2', 'Cronache 1', 'Cronache 2', 'Esdra', 'Neemia', 'Tobia',
-    'Giuditta', 'Ester', 'Maccabei 1', 'Maccabei 2', 'Giobbe', 'Salmi',
+    'Deuteronomio', 'Giosue', 'Giudici', 'Rut', '1 Samuele', '2 Samuele',
+    '1 Re', '2 Re', '1 Cronache', '2 Cronache', 'Esdra', 'Neemia', 'Tobia',
+    'Giuditta', 'Ester', '1 Maccabei', '2 Maccabei', 'Giobbe', 'Salmi',
     'Proverbi', 'Qoelet', 'Cantico_Dei_Cantici', 'Sapienza', 'Siracide',
     'Isaia', 'Geremia', 'Lamentazioni', 'Baruc', 'Ezechiele', 'Daniele',
     'Osea', 'Gioele', 'Amos', 'Abdia', 'Giona', 'Michea', 'Naum', 'Abacuc',
     'Sofonia', 'Aggeo', 'Zaccaria', 'Malachia', 'Matteo', 'Marco', 'Luca',
-    'Giovanni', 'Atti_degli_Apostoli', 'Romani', 'Corinzi 1', 'Corinzi 2',
-    'Galati', 'Efesini', 'Filippesi', 'Colossesi', 'Tessalonicesi 1',
-    'Tessalonicesi 2', 'Timoteo 1', 'Timoteo 2', 'Tito', 'Filemone',
-    'Ebrei', 'Giacomo', 'Pietro 1', 'Pietro 2', 'Giovanni 1', 'Giovanni 2',
-    'Giovanni 3', 'Giuda' or 'Apocalisse';
+    'Giovanni', 'Atti_degli_Apostoli', 'Romani', '1 Corinzi', '2 Corinzi',
+    'Galati', 'Efesini', 'Filippesi', 'Colossesi', '1 Tessalonicesi',
+    '2 Tessalonicesi', '1 Timoteo', '2 Timoteo', 'Tito', 'Filemone',
+    'Ebrei', 'Giacomo', '1 Pietro', '2 Pietro', '1 Giovanni', '2 Giovanni',
+    '3 Giovanni', 'Giuda' or 'Apocalisse';
 
     chapter: the chapter number;
 
@@ -53,44 +52,37 @@ class CEI2008(object):
 
     def __init__(self, book, chapter, verses):
         self.url = (
-                'http://www.bibbiaedu.it/pls/bibbiaol/GestBibbia09.Ricerca?'
+                'http://www.bibbiaedu.it/testi/Bibbia_CEI_2008.ricerca?'
                 'Libro={0}&Capitolo={1}'.format(book.replace(' ', '%20'),
                     chapter))
         try:
-            self.soup = _cache[book, chapter]
+            self.webpage = _cache[book, chapter]
         except:
-            self.soup = BS.BeautifulSoup(
-                    urllib2.urlopen(self.url).read().replace('<dd>', ''))
-            _cache[book, chapter] = self.soup
+            self.webpage = urllib.request.urlopen(self.url).readlines()
+            _cache[book, chapter] = self.webpage
         self.verses = verses
 
     def __str__(self):
         return ''.join(self.get_verses()).rstrip('\n ')
 
-    def get_raw_verse(self, number):
-        """Return the verse as a not well formatted string."""
-        contents = self.soup.find('div', {'class': 'testo'}).contents
-        parts = []
-        for i in enumerate(contents):
-            if 'name="VER_{0}"'.format(number) in str(i[1]):
-                n = i[0] + 1
-                while (isinstance(contents[n], BS.NavigableString) or
-                        str(contents[n]) == '<br />' or
-                        str(contents[n]).startswith('<i>')):
-                    parts.append(str(contents[n]).replace(
-                        '<br />', '\n').replace('<i>', '').replace('</i>', ''))
-                    n += 1
-                return ''.join(parts)
+    def get_verse(self, number):
+        """Return the desired verse."""
+        for line in self.webpage:
+            line = line.decode('latin_1')
+            if 'name="VER_{}"'.format(number) in line:
+                return line.split('</sup>')[1].replace('\n', '').replace(
+                        '<br>', '\n').replace('<dd>', '').replace(
+                        '<i> ', '').replace('</i> ', '')
 
     def get_verses(self):
-        """Return a list of the verses."""
+        """Return a list containing the verses."""
         verses = []
         if isinstance(self.verses, tuple):
             first_verse, last_verse = self.verses
             for i in range(first_verse, last_verse + 1):
-                verses.append(self.get_raw_verse(i))
+                verses.append(self.get_verse(i))
         else:
-            verses.append(self.get_raw_verse(self.verses))
+            verses.append(self.get_verse(self.verses))
         return verses
 
 if __name__ == '__main__':
@@ -98,4 +90,4 @@ if __name__ == '__main__':
         verses = tuple(int(i) for i in argv[3].split('-'))
     else:
         verses = int(argv[3])
-    print CEI2008(argv[1].replace('_', ' '), int(argv[2]), verses)
+    print(CEI2008(argv[1].replace('_', ' '), int(argv[2]), verses))

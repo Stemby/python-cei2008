@@ -1,5 +1,5 @@
 Python API for the "Nuova CEI" (CEI 2008) Bible.
-Copyright © 2011, Carlo Stemberger
+Copyright © 2011-2015, Carlo Stemberger
 
 python-cei2008 provides a simple and pythonic interface for downloading Bible
 verses from the official website of the last Catholic Italian translation:
@@ -21,9 +21,9 @@ responsable for any potential violations of the copyright law.
 
 DEPENDENCIES
 
-You only need Python and BeautifulSoap (>= 3.2). On Debian/Ubuntu:
+You only need Python 3. On Debian/Ubuntu:
 
-$ sudo aptitude install python-beautifulsoap
+$ sudo aptitude install python3
 
 
 EXAMPLES
@@ -31,7 +31,7 @@ EXAMPLES
 python-cei2008 is thought as a library:
 
 >>> from cei2008 import CEI2008
->>> print CEI2008('Matteo', 4, 4)
+>>> print(CEI2008('Matteo', 4, 4))
 Ma egli rispose: "Sta scritto:
 
 Non di solo pane vivrà l'uomo,
@@ -39,8 +39,6 @@ ma di ogni parola che esce dalla bocca di Dio".
 
 However, it integrates also a simple CLI client:
 
-$ ./cei2008.py Corinzi_1 9 16-18
-Infatti annunciare il Vangelo non è per me un vanto, perché è una necessità che mi si impone: guai a me se non annuncio il Vangelo! 
-Se lo faccio di mia iniziativa, ho diritto alla ricompensa; ma se non lo faccio di mia iniziativa, è un incarico che mi è stato affidato. 
-Qual è dunque la mia ricompensa? Quella di annunciare gratuitamente il Vangelo senza usare il diritto conferitomi dal Vangelo.
+$ ./cei2008.py 1_Corinzi 9 16-18
+Infatti annunciare il Vangelo non è per me un vanto, perché è una necessità che mi si impone: guai a me se non annuncio il Vangelo! Se lo faccio di mia iniziativa, ho diritto alla ricompensa; ma se non lo faccio di mia iniziativa, è un incarico che mi è stato affidato. Qual è dunque la mia ricompensa? Quella di annunciare gratuitamente il Vangelo senza usare il diritto conferitomi dal Vangelo.
 
