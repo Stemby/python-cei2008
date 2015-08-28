@@ -22,6 +22,7 @@ verses from the official website of the last Catholic Italian translation.
 """
 
 import urllib.request
+import html
 from sys import argv
 
 _cache = {}
@@ -70,9 +71,9 @@ class CEI2008(object):
         for line in self.webpage:
             line = line.decode('latin_1')
             if 'name="VER_{}"'.format(number) in line:
-                return line.split('</sup>')[1].replace('\n', '').replace(
-                        '<br>', '\n').replace('<dd>', '').replace(
-                        '<i> ', '').replace('</i> ', '')
+                return html.unescape(line.split('</sup>')[1].replace(
+                        '\n', '').replace('<br>', '\n').replace(
+                        '<dd>', '').replace('<i> ', '').replace('</i> ', ''))
 
     def get_verses(self):
         """Return a list containing the verses."""

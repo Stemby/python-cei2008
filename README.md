@@ -23,7 +23,7 @@ responsable for any potential violations of the copyright law.
 Dependencies
 ------------
 
-You only need Python 3. On Debian/Ubuntu:
+You only need Python 3 (>= 3.4). On Debian/Ubuntu:
 ```
 $ sudo aptitude install python3
 ```
