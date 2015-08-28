@@ -73,7 +73,8 @@ class CEI2008(object):
             if 'name="VER_{}"'.format(number) in line:
                 return html.unescape(line.split('</sup>')[1].replace(
                         '\n', '').replace('<br>', '\n').replace(
-                        '<dd>', '').replace('<i> ', '').replace('</i> ', ''))
+                        '<dd>', '').replace('</div>', '').replace(
+                        '<i> ', '').replace('</i> ', ''))
 
     def get_verses(self):
         """Return a list containing the verses."""
